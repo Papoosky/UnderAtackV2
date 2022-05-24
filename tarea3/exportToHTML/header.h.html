@@ -1,0 +1,41 @@
+<html>
+<head>
+<title>header.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #80ffea; font-style: italic;}
+.s1 { color: #f8f8f2;}
+.s2 { color: #feff80;}
+.s3 { color: #f780bf;}
+.s4 { color: #9580ff;}
+</style>
+</head>
+<body bgcolor="#282a36">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+header.h</font>
+</center></td></tr></table>
+<pre><span class="s0">#include </span><span class="s2">&lt;stdbool.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;stdio.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;stdlib.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;string.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;ctype.h&gt;</span>
+
+<span class="s3">typedef struct </span><span class="s1">ataque{</span>
+	<span class="s3">char </span><span class="s1">name [</span><span class="s4">150</span><span class="s1">];</span>
+	<span class="s3">float </span><span class="s1">attack_prob;</span>
+	<span class="s3">struct </span><span class="s1">ataque </span><span class="s3">*</span><span class="s1">next;</span>
+<span class="s1">}node;</span>
+
+
+<span class="s1">node </span><span class="s3">*</span><span class="s1">read_file(</span><span class="s3">char *</span><span class="s1">filename, node </span><span class="s3">*</span><span class="s1">list, </span><span class="s3">int </span><span class="s1">category);</span>
+<span class="s1">node </span><span class="s3">*</span><span class="s1">insert_list (node </span><span class="s3">*</span><span class="s1">list, </span><span class="s3">char </span><span class="s1">name[], </span><span class="s3">float </span><span class="s1">attack_prob);</span>
+<span class="s1">node </span><span class="s3">*</span><span class="s1">sort_list_name(node </span><span class="s3">*</span><span class="s1">list);</span>
+<span class="s1">node </span><span class="s3">*</span><span class="s1">sort_list_prob(node </span><span class="s3">*</span><span class="s1">list);</span>
+<span class="s1">node </span><span class="s3">*</span><span class="s1">sort_3(node </span><span class="s3">*</span><span class="s1">list);</span>
+<span class="s3">void </span><span class="s1">swap (node </span><span class="s3">*</span><span class="s1">atacante1, node </span><span class="s3">*</span><span class="s1">atacante2);</span>
+<span class="s3">void </span><span class="s1">write_file (</span><span class="s3">char </span><span class="s1">arg[], </span><span class="s3">int </span><span class="s1">n , node </span><span class="s3">*</span><span class="s1">list[]);</span>
+</pre>
+</body>
+</html>

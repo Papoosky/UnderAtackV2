@@ -1,0 +1,216 @@
+<html>
+<head>
+<title>funciones.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #80ffea; font-style: italic;}
+.s1 { color: #f8f8f2;}
+.s2 { color: #feff80;}
+.s3 { color: #f780bf;}
+.s4 { color: #9580ff;}
+.s5 { color: #6272a4; font-style: italic;}
+.s6 { color: #f89580;}
+</style>
+</head>
+<body bgcolor="#282a36">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+funciones.c</font>
+</center></td></tr></table>
+<pre><span class="s0">#include </span><span class="s2">&quot;header.h&quot;</span>
+<span class="s0">#include </span><span class="s2">&lt;stdbool.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;stdio.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;stdlib.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;string.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;ctype.h&gt;</span>
+
+<span class="s3">int </span><span class="s1">empty_3 </span><span class="s3">= </span><span class="s4">0</span><span class="s1">;</span>
+
+
+<span class="s1">node </span><span class="s3">*</span><span class="s1">insert_list (node </span><span class="s3">*</span><span class="s1">list, </span><span class="s3">char </span><span class="s1">name[], </span><span class="s3">float </span><span class="s1">attack_prob){</span>
+    <span class="s1">node </span><span class="s3">*</span><span class="s1">atacante, </span><span class="s3">*</span><span class="s1">aux;</span>
+    <span class="s1">atacante </span><span class="s3">= </span><span class="s1">(node </span><span class="s3">*</span><span class="s1">)malloc(</span><span class="s3">sizeof</span><span class="s1">(node));</span>
+
+
+
+    <span class="s3">if </span><span class="s1">(list </span><span class="s3">== </span><span class="s1">NULL){</span>
+        <span class="s1">strcpy(atacante </span><span class="s3">-&gt; </span><span class="s1">name, name);</span>
+        <span class="s1">atacante </span><span class="s3">-&gt; </span><span class="s1">attack_prob </span><span class="s3">= </span><span class="s1">attack_prob;</span>
+        <span class="s1">atacante </span><span class="s3">-&gt; </span><span class="s1">next </span><span class="s3">= </span><span class="s1">NULL;</span>
+        <span class="s1">list </span><span class="s3">= </span><span class="s1">atacante;</span>
+    <span class="s1">}</span>
+    <span class="s3">else </span><span class="s1">{</span>
+        <span class="s1">strcpy(atacante </span><span class="s3">-&gt; </span><span class="s1">name, name);</span>
+        <span class="s1">atacante </span><span class="s3">-&gt; </span><span class="s1">attack_prob </span><span class="s3">= </span><span class="s1">attack_prob;</span>
+        <span class="s1">atacante </span><span class="s3">-&gt; </span><span class="s1">next </span><span class="s3">= </span><span class="s1">NULL;</span>
+        <span class="s1">node </span><span class="s3">*</span><span class="s1">aux </span><span class="s3">= </span><span class="s1">list;</span>
+        <span class="s3">while</span><span class="s1">(aux </span><span class="s3">-&gt; </span><span class="s1">next </span><span class="s3">!= </span><span class="s1">NULL){</span>
+            <span class="s1">aux </span><span class="s3">= </span><span class="s1">aux </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+        <span class="s1">}</span>
+        <span class="s1">aux </span><span class="s3">-&gt; </span><span class="s1">next </span><span class="s3">= </span><span class="s1">atacante;</span>
+    <span class="s1">}</span>
+    <span class="s3">return </span><span class="s1">list;</span>
+<span class="s1">}</span>
+
+<span class="s5">//recibe los datos desde el archivo de entrada y los mete en una lista</span>
+<span class="s1">node </span><span class="s3">*</span><span class="s1">read_file(</span><span class="s3">char *</span><span class="s1">filename, node </span><span class="s3">*</span><span class="s1">list, </span><span class="s3">int </span><span class="s1">category){</span>
+    <span class="s1">FILE </span><span class="s3">*</span><span class="s1">fp;</span>
+    <span class="s3">char </span><span class="s1">line [</span><span class="s4">500</span><span class="s1">];</span>
+    <span class="s3">char </span><span class="s1">name [</span><span class="s4">300</span><span class="s1">];</span>
+    <span class="s3">char </span><span class="s1">sep[] </span><span class="s3">= </span><span class="s2">&quot;,&quot;</span><span class="s1">;</span>
+    <span class="s3">int </span><span class="s1">column </span><span class="s3">= </span><span class="s4">0</span><span class="s1">;</span>
+    <span class="s3">float </span><span class="s1">attack_prob </span><span class="s3">= </span><span class="s4">0</span><span class="s1">;</span>
+    <span class="s3">int </span><span class="s1">danger_category </span><span class="s3">= </span><span class="s4">0</span><span class="s1">;</span>
+
+    <span class="s1">fp </span><span class="s3">= </span><span class="s1">fopen(filename,</span><span class="s2">&quot;r&quot;</span><span class="s1">);</span>
+
+    <span class="s3">if </span><span class="s1">(fp </span><span class="s3">!= </span><span class="s1">NULL){</span>
+        <span class="s1">fgets(line,</span><span class="s4">1000</span><span class="s1">,fp);</span>
+        <span class="s3">while </span><span class="s1">(</span><span class="s3">!</span><span class="s1">feof(fp)){</span>
+            <span class="s1">fgets(line, </span><span class="s4">1000</span><span class="s1">, fp);</span>
+            <span class="s3">char *</span><span class="s1">token </span><span class="s3">= </span><span class="s1">strtok(line, sep);</span>
+            <span class="s3">if </span><span class="s1">(token </span><span class="s3">!= </span><span class="s1">NULL){</span>
+                <span class="s3">while </span><span class="s1">(token </span><span class="s3">!= </span><span class="s1">NULL){</span>
+                    <span class="s3">if</span><span class="s1">(column </span><span class="s3">== </span><span class="s4">0</span><span class="s1">){</span>
+                        <span class="s1">strcpy(name,token);</span>
+                    <span class="s1">}</span>
+                    <span class="s3">if</span><span class="s1">(column </span><span class="s3">== </span><span class="s4">1</span><span class="s1">){</span>
+                        <span class="s1">danger_category </span><span class="s3">= </span><span class="s1">atoi(token);</span>
+                    <span class="s1">}</span>
+                    <span class="s3">if</span><span class="s1">(column </span><span class="s3">== </span><span class="s4">2</span><span class="s1">){</span>
+                        <span class="s1">attack_prob </span><span class="s3">= </span><span class="s1">atof(token);</span>
+                    <span class="s1">}</span>
+                    <span class="s1">token </span><span class="s3">= </span><span class="s1">strtok(NULL,sep);</span>
+                    <span class="s1">column </span><span class="s3">++ </span><span class="s1">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s1">column </span><span class="s3">= </span><span class="s4">0</span><span class="s1">;</span>
+            <span class="s3">if </span><span class="s1">((danger_category </span><span class="s3">== </span><span class="s4">2 </span><span class="s3">&amp;&amp; </span><span class="s1">attack_prob </span><span class="s3">== </span><span class="s4">0</span><span class="s1">) </span><span class="s3">|| </span><span class="s1">(danger_category </span><span class="s3">== </span><span class="s4">1 </span><span class="s3">&amp;&amp; </span><span class="s1">attack_prob </span><span class="s3">== </span><span class="s4">0</span><span class="s1">)){</span>
+                <span class="s1">attack_prob </span><span class="s3">= -</span><span class="s4">1</span><span class="s1">;</span>
+            <span class="s1">}</span>
+            <span class="s3">if </span><span class="s1">((danger_category </span><span class="s3">== </span><span class="s4">4 </span><span class="s3">&amp;&amp; </span><span class="s1">attack_prob </span><span class="s3">== </span><span class="s4">0</span><span class="s1">) </span><span class="s3">|| </span><span class="s1">(danger_category </span><span class="s3">== </span><span class="s4">5 </span><span class="s3">&amp;&amp; </span><span class="s1">attack_prob </span><span class="s3">== </span><span class="s4">0</span><span class="s1">)){</span>
+                <span class="s1">attack_prob </span><span class="s3">= </span><span class="s4">3</span><span class="s1">;</span>
+            <span class="s1">}</span>
+            <span class="s3">if </span><span class="s1">(danger_category </span><span class="s3">== </span><span class="s1">category){</span>
+                <span class="s1">list </span><span class="s3">= </span><span class="s1">insert_list(list, name, attack_prob);</span>
+                <span class="s3">if </span><span class="s1">(danger_category </span><span class="s3">== </span><span class="s4">3 </span><span class="s3">&amp;&amp; </span><span class="s1">attack_prob </span><span class="s3">!= </span><span class="s4">0 </span><span class="s1">){</span>
+                    <span class="s1">empty_3</span><span class="s3">++</span><span class="s1">;</span>
+                <span class="s1">};</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s1">fclose(fp);</span>
+    <span class="s3">return </span><span class="s1">list;</span>
+<span class="s1">}</span>
+
+<span class="s5">//se ocupa en read_file y sirve para insertar datos en lista</span>
+
+
+<span class="s3">void </span><span class="s1">swap (node </span><span class="s3">*</span><span class="s1">atacante1, node </span><span class="s3">*</span><span class="s1">atacante2){</span>
+    <span class="s3">char </span><span class="s1">tmpName[</span><span class="s4">300</span><span class="s1">];</span>
+    <span class="s3">float </span><span class="s1">tmpProb;</span>
+
+    <span class="s1">strcpy(tmpName, atacante1 </span><span class="s3">-&gt; </span><span class="s1">name);</span>
+    <span class="s1">strcpy(atacante1 </span><span class="s3">-&gt; </span><span class="s1">name, atacante2 </span><span class="s3">-&gt; </span><span class="s1">name);</span>
+    <span class="s1">strcpy(atacante2 </span><span class="s3">-&gt; </span><span class="s1">name, tmpName);</span>
+
+    <span class="s1">tmpProb </span><span class="s3">= </span><span class="s1">atacante1 </span><span class="s3">-&gt; </span><span class="s1">attack_prob;</span>
+    <span class="s1">atacante1 </span><span class="s3">-&gt; </span><span class="s1">attack_prob </span><span class="s3">= </span><span class="s1">atacante2 </span><span class="s3">-&gt;</span><span class="s1">attack_prob;</span>
+    <span class="s1">atacante2 </span><span class="s3">-&gt; </span><span class="s1">attack_prob </span><span class="s3">= </span><span class="s1">tmpProb;</span>
+<span class="s1">}</span>
+
+
+<span class="s1">node </span><span class="s3">*</span><span class="s1">sort_list_name(node </span><span class="s3">*</span><span class="s1">list){</span>
+    <span class="s1">node</span><span class="s3">* </span><span class="s1">actual </span><span class="s3">= </span><span class="s1">list;</span>
+    <span class="s1">node </span><span class="s3">*</span><span class="s1">sig;</span>
+    <span class="s3">while </span><span class="s1">(actual </span><span class="s3">-&gt; </span><span class="s1">next </span><span class="s3">!= </span><span class="s1">NULL){</span>
+        <span class="s1">sig </span><span class="s3">= </span><span class="s1">actual </span><span class="s3">-&gt;</span><span class="s1">next;</span>
+        <span class="s3">while</span><span class="s1">(sig </span><span class="s3">!= </span><span class="s1">NULL){</span>
+            <span class="s3">if </span><span class="s1">(actual </span><span class="s3">-&gt; </span><span class="s1">attack_prob </span><span class="s3">&lt; </span><span class="s1">sig </span><span class="s3">-&gt; </span><span class="s1">attack_prob){</span>
+
+                <span class="s1">swap(actual,sig);</span>
+
+
+            <span class="s1">}</span>
+            <span class="s1">sig </span><span class="s3">= </span><span class="s1">sig </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+        <span class="s1">}</span>
+        <span class="s1">actual </span><span class="s3">= </span><span class="s1">actual </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+        <span class="s1">sig </span><span class="s3">= </span><span class="s1">actual </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+    <span class="s1">}</span>
+    <span class="s3">return </span><span class="s1">list;</span>
+<span class="s1">}</span>
+
+
+<span class="s1">node </span><span class="s3">*</span><span class="s1">sort_list_prob(node </span><span class="s3">*</span><span class="s1">list){</span>
+    <span class="s1">node</span><span class="s3">* </span><span class="s1">actual </span><span class="s3">= </span><span class="s1">list;</span>
+    <span class="s1">node </span><span class="s3">*</span><span class="s1">sig;</span>
+    <span class="s3">while </span><span class="s1">(actual </span><span class="s3">-&gt; </span><span class="s1">next </span><span class="s3">!= </span><span class="s1">NULL){</span>
+        <span class="s1">sig </span><span class="s3">= </span><span class="s1">actual </span><span class="s3">-&gt;</span><span class="s1">next;</span>
+        <span class="s3">while</span><span class="s1">(sig </span><span class="s3">!= </span><span class="s1">NULL){</span>
+            <span class="s3">if </span><span class="s1">(actual </span><span class="s3">-&gt;</span><span class="s1">attack_prob </span><span class="s3">&lt; </span><span class="s1">sig </span><span class="s3">-&gt; </span><span class="s1">attack_prob){</span>
+                <span class="s1">swap(actual,sig);</span>
+            <span class="s1">}</span>
+            <span class="s1">sig </span><span class="s3">= </span><span class="s1">sig </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+        <span class="s1">}</span>
+        <span class="s1">actual </span><span class="s3">= </span><span class="s1">actual </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+        <span class="s1">sig </span><span class="s3">= </span><span class="s1">actual </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+    <span class="s1">}</span>
+    <span class="s3">return </span><span class="s1">list;</span>
+<span class="s1">}</span>
+
+<span class="s1">node </span><span class="s3">*</span><span class="s1">sort_3(node </span><span class="s3">*</span><span class="s1">list){</span>
+    <span class="s1">node </span><span class="s3">*</span><span class="s1">tmp1 </span><span class="s3">= </span><span class="s1">list;</span>
+    <span class="s1">node </span><span class="s3">*</span><span class="s1">tmp2 </span><span class="s3">= </span><span class="s1">NULL;</span>
+    <span class="s3">int </span><span class="s1">count </span><span class="s3">= </span><span class="s4">0</span><span class="s1">;</span>
+    <span class="s3">int </span><span class="s1">mitad </span><span class="s3">= </span><span class="s1">empty_3 </span><span class="s3">/ </span><span class="s4">2</span><span class="s1">;</span>
+    <span class="s1">tmp1 </span><span class="s3">= </span><span class="s1">list;</span>
+    <span class="s3">while </span><span class="s1">(tmp1 </span><span class="s3">!= </span><span class="s1">NULL){</span>
+        <span class="s3">if </span><span class="s1">(count </span><span class="s3">&lt; </span><span class="s1">mitad){</span>
+            <span class="s1">tmp2 </span><span class="s3">= </span><span class="s1">insert_list(tmp2, tmp1 </span><span class="s3">-&gt; </span><span class="s1">name , tmp1 </span><span class="s3">-&gt; </span><span class="s1">attack_prob);</span>
+        <span class="s1">}</span>
+        <span class="s3">if </span><span class="s1">(count </span><span class="s3">&gt;= </span><span class="s1">empty_3 ){</span>
+            <span class="s1">tmp2 </span><span class="s3">= </span><span class="s1">insert_list(tmp2, tmp1 </span><span class="s3">-&gt; </span><span class="s1">name , tmp1 </span><span class="s3">-&gt; </span><span class="s1">attack_prob);</span>
+        <span class="s1">}</span>
+        <span class="s1">count</span><span class="s3">++</span><span class="s1">;</span>
+        <span class="s1">tmp1 </span><span class="s3">= </span><span class="s1">tmp1 </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+    <span class="s1">}</span>
+    <span class="s1">tmp1 </span><span class="s3">= </span><span class="s1">list;</span>
+    <span class="s1">count </span><span class="s3">= </span><span class="s4">0</span><span class="s1">;</span>
+    <span class="s3">while </span><span class="s1">(tmp1 </span><span class="s3">!= </span><span class="s1">NULL){</span>
+        <span class="s3">if </span><span class="s1">(count </span><span class="s3">&gt;= </span><span class="s1">mitad </span><span class="s3">&amp;&amp; </span><span class="s1">count </span><span class="s3">&lt; </span><span class="s1">empty_3){</span>
+            <span class="s1">tmp2 </span><span class="s3">= </span><span class="s1">insert_list(tmp2, tmp1 </span><span class="s3">-&gt; </span><span class="s1">name , tmp1 </span><span class="s3">-&gt; </span><span class="s1">attack_prob);</span>
+        <span class="s1">}</span>
+        <span class="s1">count</span><span class="s3">++</span><span class="s1">;</span>
+        <span class="s1">tmp1 </span><span class="s3">= </span><span class="s1">tmp1 </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+
+    <span class="s1">}</span>
+    <span class="s3">return </span><span class="s1">tmp2;</span>
+<span class="s1">}</span>
+
+<span class="s5">//funcion auxiliar ocupada ne ordenamientos</span>
+
+<span class="s3">void </span><span class="s1">write_file (</span><span class="s3">char </span><span class="s1">arg[], </span><span class="s3">int </span><span class="s1">n , node </span><span class="s3">*</span><span class="s1">list[]){</span>
+    <span class="s1">FILE </span><span class="s3">*</span><span class="s1">fp;</span>
+    <span class="s1">node </span><span class="s3">*</span><span class="s1">aux;</span>
+    <span class="s3">int </span><span class="s1">count </span><span class="s3">= </span><span class="s4">0</span><span class="s1">;</span>
+    <span class="s1">fp </span><span class="s3">= </span><span class="s1">fopen(arg,</span><span class="s2">&quot;w&quot;</span><span class="s1">);</span>
+    <span class="s3">if </span><span class="s1">(fp </span><span class="s3">!= </span><span class="s1">NULL){</span>
+        <span class="s3">for </span><span class="s1">(</span><span class="s3">int </span><span class="s1">i </span><span class="s3">= </span><span class="s4">5</span><span class="s1">; i </span><span class="s3">&gt; </span><span class="s4">0</span><span class="s1">; </span><span class="s3">--</span><span class="s1">i){</span>
+            <span class="s1">aux </span><span class="s3">= </span><span class="s1">list[i];</span>
+            <span class="s3">while</span><span class="s1">(aux </span><span class="s3">!= </span><span class="s1">NULL){</span>
+                <span class="s1">fprintf(fp, </span><span class="s2">&quot;Nombre: %s</span><span class="s6">\n</span><span class="s2">&quot;</span><span class="s1">, aux </span><span class="s3">-&gt; </span><span class="s1">name);</span>
+                <span class="s1">aux </span><span class="s3">= </span><span class="s1">aux </span><span class="s3">-&gt; </span><span class="s1">next;</span>
+                <span class="s1">count</span><span class="s3">++</span><span class="s1">;</span>
+                <span class="s3">if</span><span class="s1">(count </span><span class="s3">== </span><span class="s1">n){</span>
+                    <span class="s1">i</span><span class="s3">=</span><span class="s4">0</span><span class="s1">;</span>
+                    <span class="s3">break</span><span class="s1">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s1">fclose(fp);</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
